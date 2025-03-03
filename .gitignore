@@ -1,0 +1,15 @@
+# Ignore generated files and directories
+images/
+uploaded_img/
+project images/
+
+# Ignore environment-specific files
+*.env
+*.local.php
+
+# Ignore database files
+food_db.sql
+
+# Ignore system files
+Thumbs.db
+.DS_Store
