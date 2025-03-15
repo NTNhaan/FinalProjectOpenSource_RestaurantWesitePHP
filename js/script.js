@@ -1,12 +1,10 @@
-// hiển thị navbar khi ấn menu-btn ở dạng mobile
-navbar = document.querySelector(".header .flex .navbar");
+  navbar = document.querySelector(".header .flex .navbar");
 
-document.querySelector("#menu-btn").onclick = () => {
-  navbar.classList.toggle("active");
-  profile.classList.remove("active");
-};
+  document.querySelector("#menu-btn").onclick = () => {
+    navbar.classList.toggle("active");
+    profile.classList.remove("active");
+  };
 
-// hiển thị profile khi ấn user-btn
 profile = document.querySelector(".header .flex .profile");
 
 document.querySelector("#user-btn").onclick = () => {

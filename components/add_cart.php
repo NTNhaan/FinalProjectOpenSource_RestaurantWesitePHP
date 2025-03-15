@@ -5,7 +5,7 @@ if(isset($_POST['add_to_cart'])){
    if($user_id == ''){
       header('location:login.php');
    }else{
-
+// sử dụng filter_var để lọc và xác thực dữ liệu
       $pid = $_POST['pid'];
       $pid = filter_var($pid, FILTER_SANITIZE_STRING);
       $name = $_POST['name'];
@@ -17,12 +17,15 @@ if(isset($_POST['add_to_cart'])){
       $qty = $_POST['qty'];
       $qty = filter_var($qty, FILTER_SANITIZE_STRING);
 
+      // lấy dữ liệu giỏ hàng để kiểm tra
       $check_cart_numbers = $conn->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
       $check_cart_numbers->execute([$name, $user_id]);
 
+      // nếu sản phẩm đã có trong giỏ hàng thì hiển thị thông báo
       if($check_cart_numbers->rowCount() > 0){
          $message[] = 'already added to cart!';
       }else{
+         // thêm sản phẩm vào trong giỏ hàng
          $insert_cart = $conn->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
          $insert_cart->execute([$user_id, $pid, $name, $price, $qty, $image]);
          $message[] = 'added to cart!';

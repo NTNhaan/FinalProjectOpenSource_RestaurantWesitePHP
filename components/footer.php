@@ -1,39 +1,56 @@
+<?php
+?>
+
 <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <div class="logo">
+                <img src="../images/PizzaHut/pizza-hut-logo.png" alt="Pizza Hut Logo">
+            </div>
+            <div class="social-links">
+                <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="gmail"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
 
-   <section class="grid">
+        <div class="footer-section">
+            <h3>Về chúng tôi</h3>
+            <ul>
+                <li><a href="#">Giới thiệu</a></li>
+                <li><a href="#">Tầm nhìn và sứ mệnh của chúng tôi</a></li>
+                <li><a href="#">Giá trị cốt lõi</a></li>
+                <li><a href="#">An toàn thực phẩm</a></li>
+                <li><a href="#">LIMO</a></li>
+            </ul>
+        </div>
 
-      <div class="box">
-         <img src="images/email-icon.png" alt="">
-         <h3>our email</h3>
-         <a href="mailto:shaikhanas@gmail.com">shaikhanas@gmail.com</a>
-         <a href="mailto:anasbhai@gmail.com">anasbhai@gmail.com</a>
-      </div>
+        <div class="footer-section">
+            <h3>Vị trí cửa hàng</h3>
+            <ul>
+                <li><a href="#">Miền Bắc</a></li>
+                <li><a href="#">Miền Trung</a></li>
+                <li><a href="#">Miền Nam</a></li>
+            </ul>
+        </div>
 
-      <div class="box">
-         <img src="images/clock-icon.png" alt="">
-         <h3>opening hours</h3>
-         <p>00:07am to 00:10pm</p>
-      </div>
-
-      <div class="box">
-         <img src="images/map-icon.png" alt="">
-         <h3>our address</h3>
-         <a href="#">mumbai, india - 400104</a>
-      </div>
-
-      <div class="box">
-         <img src="images/phone-icon.png" alt="">
-         <h3>our number</h3>
-         <a href="tel:1234567890">123-456-7890</a>
-         <a href="tel:1112223333">111-222-3333</a>
-      </div>
-
-   </section>
-
-   <div class="credit"></div>
-
+        <div class="footer-section">
+            <h3>Tải ứng dụng</h3>
+            <div class="app-links">
+                <a href="#" class="app-link">
+                    <img src="../images/pizzahutnew/icon/ch_play.svg" alt="Google Play">
+                </a>
+                <a href="#" class="app-link">
+                    <img src="../images/pizzahutnew/icon/apple_store.svg" alt="App Store">
+                </a>
+            </div>
+            <div class="certification">
+                <img src="../images/pizzahutnew/icon/certification.svg" alt="Certification">
+            </div>
+        </div>
+    </div>
 </footer>
 
 <div class="loader">
-   <img src="images/loader.gif" alt="">
+    <img src="../images/pizzahutnew/icon/animated-gif-maker.gif" alt="">
 </div>

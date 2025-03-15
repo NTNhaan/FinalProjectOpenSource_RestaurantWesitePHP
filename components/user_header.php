@@ -13,33 +13,33 @@ if (isset($message)) {
 
 <header class="header">
 
-   <section class="flex">
+    <section class="flex">
 
-      <a href="home.php" class="logo"> <img src="images/PizzaHut/bd3555a.png" alt="pizzaHutLogo"
-            style="width: 200px; height: auto;"></a>
+        <a href="home.php" class="logo"> <img src="images/PizzaHut/bd3555a.png" alt="pizzaHutLogo"
+                style="width: 200px; height: auto;"></a>
 
-      <nav class="navbar">
-         <a href="home.php">home</a>
-         <a href="about.php">about</a>
-         <a href="menu.php">menu</a>
-         <a href="orders.php">orders</a>
-         <a href="contact.php">contact</a>
-      </nav>
+        <nav class="navbar">
+            <a href="home.php">home</a>
+            <a href="about.php">about</a>
+            <a href="menu.php">menu</a>
+            <a href="orders.php">orders</a>
+            <a href="contact.php">contact</a>
+        </nav>
 
-      <div class="icons">
-         <?php
+        <div class="icons">
+            <?php
          $count_cart_items = $conn->prepare(query: "SELECT * FROM `cart` WHERE user_id = ?");
          $count_cart_items->execute([$user_id]);
-         $total_cart_items = $count_cart_items->rowCount();
+         $total_cart_items = $count_cart_items->rowCount(); // rowCount trả về số hàng mà câu lệnh sql thực thi
          ?>
-         <a href="search.php"><i class="fas fa-search"></i></a>
-         <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $total_cart_items; ?>)</span></a>
-         <div id="user-btn" class="fas fa-user"></div>
-         <div id="menu-btn" class="fas fa-bars"></div>
-      </div>
+            <a href="search.php"><i class="fas fa-search"></i></a>
+            <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $total_cart_items; ?>)</span></a>
+            <div id="user-btn" class="fas fa-user"></div>
+            <div id="menu-btn" class="fas fa-bars"></div>
+        </div>
 
-      <div class="profile">
-         <?php
+        <div class="profile">
+            <?php
          // lấy dữ liệu người dùng từ sql
          $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
          $select_profile->execute(params: [$user_id]);
@@ -50,13 +50,13 @@ if (isset($message)) {
             <!--hiển thị tên ngừi dùng-->
             <p class="name"><?= $fetch_profile['name']; ?></p>
             <div class="flex">
-               <a href="profile.php" class="btn">profile</a>
-               <a href="components/user_logout.php" onclick="return confirm('logout from this website?');"
-                  class="delete-btn">logout</a>
+                <a href="profile.php" class="btn">profile</a>
+                <a href="components/user_logout.php" onclick="return confirm('logout from this website?');"
+                    class="delete-btn">logout</a>
             </div>
             <p class="account">
-               <a href="login.php">login</a> or
-               <a href="register.php">register</a>
+                <a href="login.php">login</a> or
+                <a href="register.php">register</a>
             </p>
             <?php
          } else {
@@ -66,8 +66,8 @@ if (isset($message)) {
             <?php
          }
          ?>
-      </div>
+        </div>
 
-   </section>
+    </section>
 
 </header>
