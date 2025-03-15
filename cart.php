@@ -46,7 +46,7 @@ $grand_total = 0;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cart</title>
+    <title>PizzaHut | Cart</title>
     <link rel="icon" type="image/x-icon" href="../images/PizzaHut/pizza-hut-logo.png">
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -82,24 +82,24 @@ $grand_total = 0;
             if ($select_cart->rowCount() > 0) {
                 while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <form action="" method="post" class="box">
-                        <input type="hidden" name="cart_id" value="<?= $fetch_cart['id']; ?>">
-                        <a href="quick_view.php?pid=<?= $fetch_cart['pid']; ?>" class="fas fa-eye"></a>
-                        <button type="submit" class="fas fa-times" name="delete"
-                            onclick="return confirm('delete this item?');"></button>
-                        <img src="uploaded_img/<?= $fetch_cart['image']; ?>" alt="">
-                        <div class="name"><?= $fetch_cart['name']; ?></div>
-                        <div class="flex">
-                            <div class="price"><span>$</span><?= $fetch_cart['price']; ?></div>
-                            <input type="number" name="qty" class="qty" min="1" max="99" value="<?= $fetch_cart['quantity']; ?>"
-                                maxlength="2">
-                            <button type="submit" class="fas fa-edit" name="update_qty"></button>
-                        </div>
-                        <div class="sub-total"> sub total :
-                            <span>$<?= $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</span>
-                        </div>
-                    </form>
-                    <?php
+            <form action="" method="post" class="box">
+                <input type="hidden" name="cart_id" value="<?= $fetch_cart['id']; ?>">
+                <a href="quick_view.php?pid=<?= $fetch_cart['pid']; ?>" class="fas fa-eye"></a>
+                <button type="submit" class="fas fa-times" name="delete"
+                    onclick="return confirm('delete this item?');"></button>
+                <img src="uploaded_img/<?= $fetch_cart['image']; ?>" alt="">
+                <div class="name"><?= $fetch_cart['name']; ?></div>
+                <div class="flex">
+                    <div class="price"><span>$</span><?= $fetch_cart['price']; ?></div>
+                    <input type="number" name="qty" class="qty" min="1" max="99" value="<?= $fetch_cart['quantity']; ?>"
+                        maxlength="2">
+                    <button type="submit" class="fas fa-edit" name="update_qty"></button>
+                </div>
+                <div class="sub-total"> sub total :
+                    <span>$<?= $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</span>
+                </div>
+            </form>
+            <?php
                     $grand_total += $sub_total;
                 }
             } else {

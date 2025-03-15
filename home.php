@@ -11,6 +11,8 @@ if (isset($_SESSION['user_id'])) {
 }
 ;
 
+$page = 'home';
+
 include 'components/add_cart.php';
 
 ?>
@@ -22,9 +24,15 @@ include 'components/add_cart.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+    <title>PizzaHut | Home</title>
     <link rel="icon" type="image/x-icon" href="../images/PizzaHut/pizza-hut-logo.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
+    <!-- Preload slider images -->
+    <link rel="preload" as="image" href="images/pizzahutnew/Desktop_ZTBNQ.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Hometop.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Lifestyle.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/VIE_BZGZF_050320250622.jpeg">
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -41,50 +49,17 @@ include 'components/add_cart.php';
 
 
     <section class="hero">
-
         <div class="swiper hero-slider">
-
             <div class="swiper-wrapper">
-
-                <div class="swiper-slide slide">
-                    <div class="content">
-                        <span>order online</span>
-                        <h3>delicious pizza</h3>
-                        <a href="menu.html" class="btn">see menus</a>
-                    </div>
-                    <div class="image">
-                        <img src="images/home-img-1.png" alt="">
-                    </div>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <div class="content">
-                        <span>order online</span>
-                        <h3>chezzy hamburger</h3>
-                        <a href="menu.html" class="btn">see menus</a>
-                    </div>
-                    <div class="image">
-                        <img src="images/home-img-2.png" alt="">
-                    </div>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <div class="content">
-                        <span>order online</span>
-                        <h3>rosted chicken</h3>
-                        <a href="menu.html" class="btn">see menus</a>
-                    </div>
-                    <div class="image">
-                        <img src="images/home-img-3.png" alt="">
-                    </div>
-                </div>
-
+                <div class="swiper-slide slide"></div>
+                <div class="swiper-slide slide"></div>
+                <div class="swiper-slide slide"></div>
+                <div class="swiper-slide slide"></div>
             </div>
-
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
             <div class="swiper-pagination"></div>
-
         </div>
-
     </section>
 
     <section class="category">
@@ -132,23 +107,23 @@ include 'components/add_cart.php';
             if ($select_products->rowCount() > 0) {
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-            <form action="" method="post" class="box">
-                <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-                <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
-                <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
-                <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
-                <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-                <a href="category.php?category=<?= $fetch_products['category']; ?>"
-                    class="cat"><?= $fetch_products['category']; ?></a>
-                <div class="name"><?= $fetch_products['name']; ?></div>
-                <div class="flex">
-                    <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
-                    <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
-                </div>
-            </form>
-            <?php
+                    <form action="" method="post" class="box">
+                        <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                        <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
+                        <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
+                        <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
+                        <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
+                        <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
+                        <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                        <a href="category.php?category=<?= $fetch_products['category']; ?>"
+                            class="cat"><?= $fetch_products['category']; ?></a>
+                        <div class="name"><?= $fetch_products['name']; ?></div>
+                        <div class="flex">
+                            <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
+                            <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                        </div>
+                    </form>
+                    <?php
                 }
             } else {
                 echo '<p class="empty">no products added yet!</p>';
@@ -172,15 +147,32 @@ include 'components/add_cart.php';
     <script src="js/script.js"></script>
 
     <script>
-    var swiper = new Swiper(".hero-slider", {
-        loop: true,
-        grabCursor: true,
-        effect: "flip",
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-    });
+        var swiper = new Swiper(".hero-slider", {
+            loop: true,
+            grabCursor: true,
+            preloadImages: true,
+            lazy: true,
+            effect: "fade",
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 800,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            watchSlidesProgress: true,
+            watchSlidesVisibility: true,
+            preventInteractionOnTransition: true,
+        });
     </script>
 
 </body>

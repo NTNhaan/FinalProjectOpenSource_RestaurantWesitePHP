@@ -52,5 +52,5 @@
 </footer>
 
 <div class="loader">
-    <img src="../images/pizzahutnew/icon/animated-gif-maker.gif" alt="">
+    <img src="../images/pizzahutnew/icon/animated-gif-maker.gif" alt="Loading...">
 </div>

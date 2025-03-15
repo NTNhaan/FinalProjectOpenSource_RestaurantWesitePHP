@@ -85,46 +85,44 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>update profile</title>
-   <link rel="icon" type="image/x-icon" href="../images/PizzaHut/pizza-hut-logo.png">
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaHut | Update Profile</title>
+    <link rel="icon" type="image/x-icon" href="../images/PizzaHut/pizza-hut-logo.png">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
-   <!-- header section starts  -->
-   <?php include 'components/user_header.php'; ?>
-   <!-- header section ends -->
+    <!-- header section starts  -->
+    <?php include 'components/user_header.php'; ?>
+    <!-- header section ends -->
 
-   <section class="form-container update-form">
+    <section class="form-container update-form">
 
-      <form action="" method="post">
-         <h3>update profile</h3>
-         <input type="text" name="name" placeholder="<?= $fetch_profile['name']; ?>" class="box" maxlength="50">
-         <input type="email" name="email" placeholder="<?= $fetch_profile['email']; ?>" class="box" maxlength="50"
-            oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="number" name="number" placeholder="<?= $fetch_profile['number']; ?>"" class=" box" min="0"
-            max="9999999999" maxlength="10">
-         <input type="password" name="old_pass" placeholder="enter your old password" class="box" maxlength="50"
-            oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="password" name="new_pass" placeholder="enter your new password" class="box" maxlength="50"
-            oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="password" name="confirm_pass" placeholder="confirm your new password" class="box" maxlength="50"
-            oninput="this.value = this.value.replace(/\s/g, '')">
-         <input type="submit" value="update now" name="submit" class="btn">
-      </form>
+        <form action="" method="post">
+            <h3>update profile</h3>
+            <input type="text" name="name" placeholder="<?= $fetch_profile['name']; ?>" class="box" maxlength="50">
+            <input type="email" name="email" placeholder="<?= $fetch_profile['email']; ?>" class="box" maxlength="50"
+                oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="number" name="number" placeholder="<?= $fetch_profile['number']; ?>"" class=" box" min="0"
+                max="9999999999" maxlength="10">
+            <input type="password" name="old_pass" placeholder="enter your old password" class="box" maxlength="50"
+                oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="new_pass" placeholder="enter your new password" class="box" maxlength="50"
+                oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="password" name="confirm_pass" placeholder="confirm your new password" class="box"
+                maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
+            <input type="submit" value="update now" name="submit" class="btn">
+        </form>
 
-   </section>
-
-
+    </section>
 
 
 
@@ -133,15 +131,17 @@ if (isset($_POST['submit'])) {
 
 
 
-   <?php include 'components/footer.php'; ?>
+
+
+    <?php include 'components/footer.php'; ?>
 
 
 
 
 
 
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
 
 </body>
 
