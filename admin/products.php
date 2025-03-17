@@ -19,6 +19,8 @@ if (isset($_POST['add_product'])) {
    $price = filter_var($price, FILTER_SANITIZE_STRING);
    $category = $_POST['category'];
    $category = filter_var($category, FILTER_SANITIZE_STRING);
+   $detail = $_POST['detail'];
+   $detail = filter_var($detail, FILTER_SANITIZE_STRING);
 
    $image = $_FILES['image']['name'];
    $image = filter_var($image, FILTER_SANITIZE_STRING);
@@ -37,8 +39,8 @@ if (isset($_POST['add_product'])) {
       } else {
          move_uploaded_file($image_tmp_name, $image_folder);
 
-         $insert_product = $conn->prepare("INSERT INTO `products`(name, category, price, image) VALUES(?,?,?,?)");
-         $insert_product->execute([$name, $category, $price, $image]);
+         $insert_product = $conn->prepare("INSERT INTO `products`(name, category, price, image, detail) VALUES(?,?,?,?,?)");
+         $insert_product->execute([$name, $category, $price, $image, $detail]);
 
          $message[] = 'new product added!';
       }
@@ -97,10 +99,11 @@ if (isset($_GET['delete'])) {
          <select name="category" class="box" required>
             <option value="" disabled selected>select category --</option>
             <option value="main dish">main dish</option>
-            <option value="fast food">fast food</option>
+            <option value="starter dish">starter dish</option>
+            <option value="chicken dish">chicken dish</option>
             <option value="drinks">drinks</option>
-            <option value="desserts">desserts</option>
          </select>
+         <textarea name="detail" required placeholder="enter product detail" class="box" maxlength="100"></textarea>
          <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png, image/webp" required>
          <input type="submit" value="add product" name="add_product" class="btn">
       </form>
@@ -128,6 +131,7 @@ if (isset($_GET['delete'])) {
                      <div class="category"><?= $fetch_products['category']; ?></div>
                   </div>
                   <div class="name"><?= $fetch_products['name']; ?></div>
+                  <div class="detail"><?= $fetch_products['detail']; ?></div>
                   <div class="flex-btn">
                      <a href="update_product.php?update=<?= $fetch_products['id']; ?>" class="option-btn">update</a>
                      <a href="products.php?delete=<?= $fetch_products['id']; ?>" class="delete-btn"

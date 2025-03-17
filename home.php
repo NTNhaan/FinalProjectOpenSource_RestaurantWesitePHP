@@ -29,10 +29,13 @@ include 'components/add_cart.php';
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 
     <!-- Preload slider images -->
-    <link rel="preload" as="image" href="images/pizzahutnew/Desktop_ZTBNQ.jpeg">
-    <link rel="preload" as="image" href="images/pizzahutnew/Hometop.jpeg">
-    <link rel="preload" as="image" href="images/pizzahutnew/Lifestyle.jpeg">
-    <link rel="preload" as="image" href="images/pizzahutnew/VIE_BZGZF_050320250622.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/Desktop_ZTBNQ.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/Hometop.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/Lifestyle.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/VIE_BZGZF_050320250622.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/Des_Hometop.jpeg">
+    <link rel="preload" as="image" href="images/pizzahutnew/Slider/Desktop_Hometop.jpeg">
+
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -51,6 +54,8 @@ include 'components/add_cart.php';
     <section class="hero">
         <div class="swiper hero-slider">
             <div class="swiper-wrapper">
+                <div class="swiper-slide slide"></div>
+                <div class="swiper-slide slide"></div>
                 <div class="swiper-slide slide"></div>
                 <div class="swiper-slide slide"></div>
                 <div class="swiper-slide slide"></div>
@@ -150,8 +155,6 @@ include 'components/add_cart.php';
         var swiper = new Swiper(".hero-slider", {
             loop: true,
             grabCursor: true,
-            preloadImages: true,
-            lazy: true,
             effect: "fade",
             fadeEffect: {
                 crossFade: true
@@ -169,9 +172,6 @@ include 'components/add_cart.php';
                 delay: 3500,
                 disableOnInteraction: false,
             },
-            watchSlidesProgress: true,
-            watchSlidesVisibility: true,
-            preventInteractionOnTransition: true,
         });
     </script>
 
