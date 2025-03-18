@@ -54,12 +54,24 @@ include 'components/add_cart.php';
     <section class="hero">
         <div class="swiper hero-slider">
             <div class="swiper-wrapper">
-                <div class="swiper-slide slide"></div>
-                <div class="swiper-slide slide"></div>
-                <div class="swiper-slide slide"></div>
-                <div class="swiper-slide slide"></div>
-                <div class="swiper-slide slide"></div>
-                <div class="swiper-slide slide"></div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/Desktop_ZTBNQ.jpeg" alt="Slide 1">
+                </div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/Hometop.jpeg" alt="Slide 2">
+                </div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/Lifestyle.jpeg" alt="Slide 3">
+                </div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/VIE_BZGZF_050320250622.jpeg" alt="Slide 4">
+                </div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/Des_Hometop.jpeg" alt="Slide 5">
+                </div>
+                <div class="swiper-slide slide">
+                    <img src="images/pizzahutnew/Slider/Desktop_Hometop.jpeg" alt="Slide 6">
+                </div>
             </div>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
@@ -112,23 +124,23 @@ include 'components/add_cart.php';
             if ($select_products->rowCount() > 0) {
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <form action="" method="post" class="box">
-                        <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                        <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-                        <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
-                        <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
-                        <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                        <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
-                        <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-                        <a href="category.php?category=<?= $fetch_products['category']; ?>"
-                            class="cat"><?= $fetch_products['category']; ?></a>
-                        <div class="name"><?= $fetch_products['name']; ?></div>
-                        <div class="flex">
-                            <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
-                            <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
-                        </div>
-                    </form>
-                    <?php
+            <form action="" method="post" class="box">
+                <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
+                <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
+                <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
+                <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
+                <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
+                <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                <a href="category.php?category=<?= $fetch_products['category']; ?>"
+                    class="cat"><?= $fetch_products['category']; ?></a>
+                <div class="name"><?= $fetch_products['name']; ?></div>
+                <div class="flex">
+                    <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
+                    <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                </div>
+            </form>
+            <?php
                 }
             } else {
                 echo '<p class="empty">no products added yet!</p>';
@@ -152,27 +164,27 @@ include 'components/add_cart.php';
     <script src="js/script.js"></script>
 
     <script>
-        var swiper = new Swiper(".hero-slider", {
-            loop: true,
-            grabCursor: true,
-            effect: "fade",
-            fadeEffect: {
-                crossFade: true
-            },
-            speed: 800,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
-        });
+    var swiper = new Swiper(".hero-slider", {
+        loop: true,
+        grabCursor: true,
+        effect: "fade",
+        fadeEffect: {
+            crossFade: true
+        },
+        speed: 800,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+        },
+    });
     </script>
 
 </body>
