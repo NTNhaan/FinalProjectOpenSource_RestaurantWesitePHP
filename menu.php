@@ -26,7 +26,8 @@ $page = 'menu';
     <link rel="icon" type="image/x-icon" href="../images/PizzaHut/pizza-hut-logo.png">
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -38,91 +39,93 @@ $page = 'menu';
     <?php include 'components/user_header.php'; ?>
     <!-- header section ends -->
 
-    <div class="heading">
-        <h3>our menu</h3>
-        <p><a href="home.php">home</a> <span> / menu</span></p>
-    </div>
 
     <!-- menu section starts  -->
+    <?php
+   // Get unique categories with MAIN DISH first
+   $categories = $conn->prepare("SELECT DISTINCT category FROM products ORDER BY 
+      CASE 
+         WHEN category = 'MAIN DISH' THEN 0 
+         ELSE 1 
+      END, 
+      category");
+   $categories->execute();
 
+   // For each category
+   while ($category = $categories->fetch(PDO::FETCH_ASSOC)) {
+      $current_category = $category['category'];
+      $banner_image = 'images/pizzahutnew/banner/' . strtolower($current_category) . '.jpeg';
+      ?>
+    <!-- Category Title -->
+    <div class="category-title">
+        <h2><?= ucwords($current_category) ?></h2>
+    </div>
+
+    <!-- Category Banner -->
+    <div class="category-banner">
+        <img src="<?= $banner_image ?>" alt="<?= ucwords($current_category) ?> banner">
+    </div>
+
+    <!-- Products Section -->
     <section class="products">
-
-        <h1 class="title">latest dishes</h1>
-
         <div class="box-container">
-
             <?php
-         $select_products = $conn->prepare("SELECT * FROM `products`");
-         $select_products->execute();
-         if ($select_products->rowCount() > 0) {
-            while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-               ?>
+            $select_products = $conn->prepare("SELECT * FROM products WHERE category = ?");
+            $select_products->execute([$current_category]);
+
+            if ($select_products->rowCount() > 0) {
+               while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+                  ?>
             <form action="" method="post" class="box">
                 <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
                 <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
                 <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
                 <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
-                <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                <button type="submit" class="fas fa-shopping-cart" name="add_to_cart"></button>
-                <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-                <a href="category.php?category=<?= $fetch_products['category']; ?>"
-                    class="cat"><?= $fetch_products['category']; ?></a>
-                <div class="name"><?= $fetch_products['name']; ?></div>
-                <div class="flex">
-                    <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
-                    <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2"">
-         </div>
-      </form>
-      <?php
+
+                <div class="product-image">
+                    <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                </div>
+
+                <div class="product-content">
+                    <div class="product-info">
+                        <h3 class="product-name"><?= $fetch_products['name']; ?></h3>
+                        <p class="product-detail"><?= $fetch_products['detail']; ?></p>
+                    </div>
+                    <div class="product-bottom">
+                        <div class="price">Chỉ từ <span><?= number_format($fetch_products['price']); ?>đ</span></div>
+                        <div class="actions">
+                            <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                            <button type="submit" class="add-to-cart" name="add_to_cart">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                            <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="view-detail">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <?php
+               }
+            } else {
+               echo '<p class="empty">no products added yet!</p>';
             }
-         } else {
-            echo '<p class="empty">no products added yet!</p>';
-         }
-         ?>
+            ?>
+        </div>
+    </section>
+    <?php
+   }
+   ?>
+    <!-- menu section ends -->
 
-   </div>
+    <!-- footer section starts  -->
+    <?php include 'components/footer.php'; ?>
+    <!-- footer section ends -->
 
-</section>
-
-
-<!-- menu section ends -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- footer section starts  -->
-<?php include 'components/footer.php'; ?>
-<!-- footer section ends -->
-
-
-
-
-
-
-
-
-<!-- custom js file link  -->
-<script src=" js/script.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
 
 </body>
 

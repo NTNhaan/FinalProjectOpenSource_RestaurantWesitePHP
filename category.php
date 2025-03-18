@@ -5,9 +5,9 @@ include 'components/connect.php';
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-   $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 } else {
-   $user_id = '';
+    $user_id = '';
 }
 ;
 
@@ -43,12 +43,12 @@ include 'components/add_cart.php';
         <div class="box-container">
 
             <?php
-         $category = $_GET['category'];
-         $select_products = $conn->prepare("SELECT * FROM `products` WHERE category = ?");
-         $select_products->execute([$category]);
-         if ($select_products->rowCount() > 0) {
-            while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-               ?>
+            $category = $_GET['category'];
+            $select_products = $conn->prepare("SELECT * FROM `products` WHERE category = ?");
+            $select_products->execute([$category]);
+            if ($select_products->rowCount() > 0) {
+                while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
             <form action="" method="post" class="box">
                 <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
                 <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
@@ -64,11 +64,11 @@ include 'components/add_cart.php';
                 </div>
             </form>
             <?php
+                }
+            } else {
+                echo '<p class="empty">no products added yet!</p>';
             }
-         } else {
-            echo '<p class="empty">no products added yet!</p>';
-         }
-         ?>
+            ?>
 
         </div>
 
