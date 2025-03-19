@@ -85,9 +85,9 @@ include 'components/add_cart.php';
 
         <div class="box-container">
 
-            <a href="category.php?category=fast food" class="box">
+            <a href="category.php?category=starter dish" class="box">
                 <img src="images/cat-1.png" alt="">
-                <h3>fast food</h3>
+                <h3>Starter Dish</h3>
             </a>
 
             <a href="category.php?category=main dish" class="box">
@@ -100,9 +100,9 @@ include 'components/add_cart.php';
                 <h3>drinks</h3>
             </a>
 
-            <a href="category.php?category=desserts" class="box">
-                <img src="images/cat-4.png" alt="">
-                <h3>desserts</h3>
+            <a href="category.php?category=chicken dish" class="box">
+                <img src="images/step-3.png" alt="">
+                <h3>Chicken Dish</h3>
             </a>
 
         </div>
@@ -113,59 +113,109 @@ include 'components/add_cart.php';
 
 
     <section class="products">
+        <?php
+        // Định nghĩa các category ưu tiên
+        $priority_categories = ['Combo', 'B1G1', 'B1G3', 'Mybox'];
 
-        <h1 class="title">latest dishes</h1>
+        // Hiển thị sản phẩm cho mỗi category ưu tiên
+        foreach ($priority_categories as $category) {
+            $select_products = $conn->prepare("SELECT * FROM `products` WHERE category = ?");
+            $select_products->execute([$category]);
+
+            if ($select_products->rowCount() > 0) {
+                ?>
+                <div class="category-title">
+                    <h2><?= $category ?></h2>
+                </div>
+
+                <div class="box-container priority-category">
+                    <?php
+                    while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                        <form action="" method="post" class="box">
+                            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                            <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
+                            <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
+                            <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
+
+                            <div class="product-image">
+                                <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                            </div>
+
+                            <div class="product-content">
+                                <div class="product-info">
+                                    <h3 class="product-name"><?= $fetch_products['name']; ?></h3>
+                                    <p class="product-detail"><?= $fetch_products['detail']; ?></p>
+                                </div>
+                                <div class="product-bottom">
+                                    <div class="price">Chỉ từ <span><?= number_format($fetch_products['price']); ?>đ</span></div>
+                                    <div class="actions">
+                                        <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                                        <button type="submit" class="add-to-cart" name="add_to_cart">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                        <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="view-detail">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <?php
+            }
+        }
+        ?>
+
+        <!-- Latest Dishes Section -->
+        <h1 class="title" style="margin-top: 20px;">latest dishes</h1>
 
         <div class="box-container">
-
             <?php
-            $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 6");
-            $select_products->execute();
+            $select_products = $conn->prepare("SELECT * FROM `products` WHERE category NOT IN (?, ?, ?, ?) LIMIT 6");
+            $select_products->execute($priority_categories);
             if ($select_products->rowCount() > 0) {
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-            <form action="" method="post" class="box">
-                <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-                <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
-                <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
+                    <form action="" method="post" class="box">
+                        <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                        <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
+                        <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
+                        <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
 
-                <div class="product-image">
-                    <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-                </div>
-
-                <div class="product-content">
-                    <div class="product-info">
-                        <h3 class="product-name"><?= $fetch_products['name']; ?></h3>
-                        <p class="product-detail"><?= $fetch_products['detail']; ?></p>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="price">Chỉ từ <span><?= number_format($fetch_products['price']); ?>đ</span></div>
-                        <div class="actions">
-                            <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
-                            <button type="submit" class="add-to-cart" name="add_to_cart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                            <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="view-detail">
-                                <i class="fas fa-eye"></i>
-                            </a>
+                        <div class="product-image">
+                            <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
                         </div>
-                    </div>
-                </div>
-            </form>
-            <?php
+
+                        <div class="product-content">
+                            <div class="product-info">
+                                <h3 class="product-name"><?= $fetch_products['name']; ?></h3>
+                                <p class="product-detail"><?= $fetch_products['detail']; ?></p>
+                            </div>
+                            <div class="product-bottom">
+                                <div class="price">Chỉ từ <span><?= number_format($fetch_products['price']); ?>đ</span></div>
+                                <div class="actions">
+                                    <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                                    <button type="submit" class="add-to-cart" name="add_to_cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                    <a href="quick_view.php?pid=<?= $fetch_products['id']; ?>" class="view-detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <?php
                 }
             } else {
                 echo '<p class="empty">no products added yet!</p>';
             }
             ?>
-
         </div>
-
-        <div class="more-btn">
-            <a href="menu.html" class="btn">veiw all</a>
-        </div>
-
     </section>
 
     <?php include 'components/footer.php'; ?>
@@ -177,27 +227,27 @@ include 'components/add_cart.php';
     <script src="js/script.js"></script>
 
     <script>
-    var swiper = new Swiper(".hero-slider", {
-        loop: true,
-        grabCursor: true,
-        effect: "fade",
-        fadeEffect: {
-            crossFade: true
-        },
-        speed: 800,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        autoplay: {
-            delay: 3500,
-            disableOnInteraction: false,
-        },
-    });
+        var swiper = new Swiper(".hero-slider", {
+            loop: true,
+            grabCursor: true,
+            effect: "fade",
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 800,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+        });
     </script>
 
 </body>
