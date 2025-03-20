@@ -6,21 +6,21 @@ session_start();
 
 $admin_id = $_SESSION['admin_id'];
 
-if(!isset($admin_id)){
+if (!isset($admin_id)) {
    header('location:admin_login.php');
 }
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
 
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
 
-   if(!empty($name)){
+   if (!empty($name)) {
       $select_name = $conn->prepare("SELECT * FROM `admin` WHERE name = ?");
       $select_name->execute([$name]);
-      if($select_name->rowCount() > 0){
+      if ($select_name->rowCount() > 0) {
          $message[] = 'username already taken!';
-      }else{
+      } else {
          $update_name = $conn->prepare("UPDATE `admin` SET name = ? WHERE id = ?");
          $update_name->execute([$name, $admin_id]);
       }
@@ -38,17 +38,17 @@ if(isset($_POST['submit'])){
    $confirm_pass = sha1($_POST['confirm_pass']);
    $confirm_pass = filter_var($confirm_pass, FILTER_SANITIZE_STRING);
 
-   if($old_pass != $empty_pass){
-      if($old_pass != $prev_pass){
+   if ($old_pass != $empty_pass) {
+      if ($old_pass != $prev_pass) {
          $message[] = 'old password not matched!';
-      }elseif($new_pass != $confirm_pass){
+      } elseif ($new_pass != $confirm_pass) {
          $message[] = 'confirm password not matched!';
-      }else{
-         if($new_pass != $empty_pass){
+      } else {
+         if ($new_pass != $empty_pass) {
             $update_pass = $conn->prepare("UPDATE `admin` SET password = ? WHERE id = ?");
             $update_pass->execute([$confirm_pass, $admin_id]);
             $message[] = 'password updated successfully!';
-         }else{
+         } else {
             $message[] = 'please enter a new password!';
          }
       }
