@@ -6,6 +6,31 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Load environment variables
+function loadEnv($path)
+{
+    if (!file_exists($path)) {
+        throw new Exception('.env file not found');
+    }
+
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+
+            if (!array_key_exists($key, $_ENV)) {
+                putenv(sprintf('%s=%s', $key, $value));
+                $_ENV[$key] = $value;
+            }
+        }
+    }
+}
+
+// Load .env file
+loadEnv(__DIR__ . '/../.env');
+
 function sendMail($recipient_email, $recipient_name, $subject, $body)
 {
     // Create a new PHPMailer instance
@@ -14,16 +39,16 @@ function sendMail($recipient_email, $recipient_name, $subject, $body)
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = $_ENV['SMTP_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Username = 'nhannguyen300819900@gmail.com'; // Thay thế bằng email của bạn
-        $mail->Password = 'ihfw yobp camf ddgb'; // Thay thế bằng app password từ Google
+        $mail->Username = $_ENV['SMTP_USERNAME'];
+        $mail->Password = $_ENV['SMTP_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port = $_ENV['SMTP_PORT'];
         $mail->CharSet = 'UTF-8';
 
         // Recipients
-        $mail->setFrom('nhannguyen300819900@gmail.com', 'PizzaHut'); // Thay thế bằng email và tên người gửi
+        $mail->setFrom($_ENV['SMTP_FROM_EMAIL'], $_ENV['SMTP_FROM_NAME']);
         $mail->addAddress($recipient_email, $recipient_name);
 
         // Content
