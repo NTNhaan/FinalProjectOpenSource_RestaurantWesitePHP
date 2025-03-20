@@ -13,3 +13,9 @@ food_db.sql
 # Ignore system files
 Thumbs.db
 .DS_Store
+
+/vendor/
+/PHPMailer-master/
+composer.lock
+*.log
+*.cache
