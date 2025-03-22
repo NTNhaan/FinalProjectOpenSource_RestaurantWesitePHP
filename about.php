@@ -139,89 +139,39 @@ $page = 'about';
     <!-- reviews section starts  -->
 
     <section class="reviews">
-
         <h1 class="title">customer's reivews</h1>
 
         <div class="swiper reviews-slider">
-
             <div class="swiper-wrapper">
+                <?php
+                // Lấy dữ liệu từ bảng messages
+                $select_messages = $conn->prepare("SELECT * FROM `messages` ORDER BY id DESC LIMIT 10");
+                $select_messages->execute();
 
-                <div class="swiper-slide slide">
-                    <img src="images/pic-1.png" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos voluptate eligendi laborum
-                        molestias ut earum nulla sint voluptatum labore nemo.</p>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <h3>john deo</h3>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <img src="images/pic-2.png" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos voluptate eligendi laborum
-                        molestias ut earum nulla sint voluptatum labore nemo.</p>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <h3>john deo</h3>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <img src="images/pic-3.png" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos voluptate eligendi laborum
-                        molestias ut earum nulla sint voluptatum labore nemo.</p>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <h3>john deo</h3>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <img src="images/pic-4.png" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos voluptate eligendi laborum
-                        molestias ut earum nulla sint voluptatum labore nemo.</p>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <h3>john deo</h3>
-                </div>
-
-                <div class="swiper-slide slide">
-                    <img src="images/pic-6.png" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos voluptate eligendi laborum
-                        molestias ut earum nulla sint voluptatum labore nemo.</p>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <h3>john deo</h3>
-                </div>
-
+                if ($select_messages->rowCount() > 0) {
+                    while ($fetch_message = $select_messages->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                        <div class="swiper-slide slide">
+                            <p><?= $fetch_message['message']; ?></p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3><?= $fetch_message['name']; ?></h3>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo '<p class="empty">Chưa có đánh giá nào!</p>';
+                }
+                ?>
             </div>
 
             <div class="swiper-pagination"></div>
-
         </div>
-
     </section>
 
     <!-- reviews section ends -->

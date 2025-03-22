@@ -4,11 +4,12 @@ include 'components/connect.php';
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
-}else{
-   $user_id = '';
-};
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    $user_id = '';
+}
+;
 
 include 'components/add_cart.php';
 
@@ -40,48 +41,58 @@ include 'components/add_cart.php';
         <h1 class="title">quick view</h1>
 
         <?php
-      $pid = $_GET['pid'];
-      $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
-      $select_products->execute([$pid]);
-      if($select_products->rowCount() > 0){
-         while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){
-   ?>
-        <form action="" method="post" class="box">
-            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-            <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-            <input type="hidden" name="price" value="<?= $fetch_products['price']; ?>">
-            <input type="hidden" name="image" value="<?= $fetch_products['image']; ?>">
-            <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-            <a href="category.php?category=<?= $fetch_products['category']; ?>"
-                class="cat"><?= $fetch_products['category']; ?></a>
-            <div class="name"><?= $fetch_products['name']; ?></div>
-            <div class="flex">
-                <div class="price"><span>$</span><?= $fetch_products['price']; ?></div>
-                <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
-            </div>
-            <button type="submit" name="add_to_cart" class="cart-btn">add to cart</button>
-        </form>
-        <?php
-         }
-      }else{
-         echo '<p class="empty">no products added yet!</p>';
-      }
-   ?>
+        $pid = $_GET['pid'];
+        $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
+        $select_products->execute([$pid]);
+
+        if ($select_products->rowCount() > 0) {
+            $product = $select_products->fetch(PDO::FETCH_ASSOC);
+
+            // Add to viewed products
+            $viewed_product = array(
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'price' => $product['price'],
+                'image' => $product['image'],
+                'detail' => $product['detail'],
+                'timestamp' => time()
+            );
+
+            // Remove if already exists
+            foreach ($_SESSION['viewed_products'] as $key => $item) {
+                if ($item['id'] == $pid) {
+                    unset($_SESSION['viewed_products'][$key]);
+                }
+            }
+
+            // Add to start of array
+            array_unshift($_SESSION['viewed_products'], $viewed_product);
+
+            // Keep only last 6 products
+            $_SESSION['viewed_products'] = array_slice($_SESSION['viewed_products'], 0, 6);
+            ?>
+            <form action="" method="post" class="box">
+                <input type="hidden" name="pid" value="<?= $product['id']; ?>">
+                <input type="hidden" name="name" value="<?= $product['name']; ?>">
+                <input type="hidden" name="price" value="<?= $product['price']; ?>">
+                <input type="hidden" name="image" value="<?= $product['image']; ?>">
+                <img src=" uploaded_img/<?= $product['image']; ?>" alt="">
+                <a href="category.php?category=<?= $product['category']; ?>" class=" cat">
+                    <?= $product['category']; ?></a>
+                <div class="name"><?= $product['name']; ?></div>
+                <div class="flex">
+                    <div class="price">Chỉ từ <span><?= number_format($product['price']); ?>đ</span></div>
+                    <input type="number" name="qty" class="qty" min="1" max="99" value="1" maxlength="2">
+                </div>
+                <button type="submit" name="add_to_cart" class="cart-btn">add to cart</button>
+            </form>
+            <?php
+        } else {
+            echo '<p class="empty">no products added yet!</p>';
+        }
+        ?>
 
     </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

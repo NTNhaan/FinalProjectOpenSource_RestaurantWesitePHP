@@ -1,49 +1,60 @@
 <?php
 
 include 'components/connect.php';
+include 'components/sendMail.php';
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
-}else{
-   $user_id = '';
-};
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    $user_id = '';
+}
+;
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $email = $_POST['email'];
-   $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $number = $_POST['number'];
-   $number = filter_var($number, FILTER_SANITIZE_STRING);
-   $pass = sha1($_POST['pass']);
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
-   $cpass = sha1($_POST['cpass']);
-   $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
+    $name = $_POST['name'];
+    $name = filter_var($name, FILTER_SANITIZE_STRING);
+    $email = $_POST['email'];
+    $email = filter_var($email, FILTER_SANITIZE_STRING);
+    $number = $_POST['number'];
+    $number = filter_var($number, FILTER_SANITIZE_STRING);
+    $pass = sha1($_POST['pass']);
+    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+    $cpass = sha1($_POST['cpass']);
+    $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? OR number = ?");
-   $select_user->execute([$email, $number]);
-   $row = $select_user->fetch(PDO::FETCH_ASSOC);
+    $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? OR number = ?");
+    $select_user->execute([$email, $number]);
+    $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
-   if($select_user->rowCount() > 0){
-      $message[] = 'email or number already exists!';
-   }else{
-      if($pass != $cpass){
-         $message[] = 'confirm password not matched!';
-      }else{
-         $insert_user = $conn->prepare("INSERT INTO `users`(name, email, number, password) VALUES(?,?,?,?)");
-         $insert_user->execute([$name, $email, $number, $cpass]);
-         $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
-         $select_user->execute([$email, $pass]);
-         $row = $select_user->fetch(PDO::FETCH_ASSOC);
-         if($select_user->rowCount() > 0){
-            $_SESSION['user_id'] = $row['id'];
-            header('location:home.php');
-         }
-      }
-   }
+    if ($select_user->rowCount() > 0) {
+        $message[] = 'email or number already exists!';
+    } else {
+        if ($pass != $cpass) {
+            $message[] = 'confirm password not matched!';
+        } else {
+            $insert_user = $conn->prepare("INSERT INTO `users`(name, email, number, password) VALUES(?,?,?,?)");
+            $insert_user->execute([$name, $email, $number, $cpass]);
+            $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
+            $select_user->execute([$email, $pass]);
+            $row = $select_user->fetch(PDO::FETCH_ASSOC);
+            if ($select_user->rowCount() > 0) {
+                $_SESSION['user_id'] = $row['id'];
+                $mail_result = sendWelcomeEmail($email, $name);
+
+                if ($mail_result === true) {
+                    $message[] = 'Đăng ký thành công! Email chào mừng đã được gửi đến hòm thư của bạn.';
+                    header('refresh:2;url=login.php');
+                } else {
+                    $message[] = 'Đăng ký thành công! Nhưng không thể gửi email chào mừng.';
+                    error_log("Failed to send welcome email: " . $mail_result);
+                    header('refresh:2;url=login.php');
+                }
+            }
+        }
+    }
 
 }
 
@@ -91,22 +102,7 @@ if(isset($_POST['submit'])){
 
     </section>
 
-
-
-
-
-
-
-
-
-
-
     <?php include 'components/footer.php'; ?>
-
-
-
-
-
 
 
     <!-- custom js file link  -->

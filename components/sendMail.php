@@ -127,3 +127,23 @@ function sendWelcomeEmail($email, $name)
 
     return sendMail($email, $name, $subject, $body);
 }
+
+// Function to send order completion notification
+function sendOrderCompletionEmail($email, $order_id, $order_details)
+{
+    $subject = "Đơn hàng #" . $order_id . " đã được hoàn thành - PizzaHut";
+
+    $body = "
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+        <h2 style='color: #e31837;'>Đơn hàng của bạn đã được hoàn thành!</h2>
+        <p>Đơn hàng #" . $order_id . " của bạn đã được hoàn thành và đang trong quá trình vận chuyển.</p>
+        <h3>Chi tiết đơn hàng:</h3>
+        " . $order_details . "
+        <p>Đơn hàng của bạn sẽ được giao trong thời gian sớm nhất.</p>
+        <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của PizzaHut!</p>
+        <hr>
+        <p style='font-size: 12px; color: #666;'>Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua hotline: 1900 1822</p>
+    </div>";
+
+    return sendMail($email, "", $subject, $body);
+}

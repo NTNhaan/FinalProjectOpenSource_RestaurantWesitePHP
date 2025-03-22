@@ -492,6 +492,27 @@ section {
   border-radius: 0.5rem;
 }
 
+.placed-orders .pending-count {
+  text-align: center;
+  margin: 2rem 0;
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+}
+
+.placed-orders .pending-count p {
+  font-size: 2.5rem;
+  color: var(--black);
+}
+
+.placed-orders .pending-count span {
+  color: var(--red);
+  font-size: 3rem;
+  font-weight: bold;
+}
+
 .accounts .box-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, 33rem);

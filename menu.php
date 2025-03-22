@@ -5,11 +5,51 @@ include 'components/connect.php';
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-   $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 } else {
-   $user_id = '';
+    $user_id = '';
 }
-;
+
+// Initialize viewed products session if not exists
+if (!isset($_SESSION['viewed_products'])) {
+    $_SESSION['viewed_products'] = array();
+}
+
+// Handle product view
+if (isset($_GET['pid'])) {
+    $pid = $_GET['pid'];
+
+    // Get product details
+    $select_product = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
+    $select_product->execute([$pid]);
+
+    if ($select_product->rowCount() > 0) {
+        $product = $select_product->fetch(PDO::FETCH_ASSOC);
+
+        // Add to viewed products
+        $viewed_product = array(
+            'id' => $product['id'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'image' => $product['image'],
+            'detail' => $product['detail'],
+            'timestamp' => time()
+        );
+
+        // Remove if already exists
+        foreach ($_SESSION['viewed_products'] as $key => $item) {
+            if ($item['id'] == $pid) {
+                unset($_SESSION['viewed_products'][$key]);
+            }
+        }
+
+        // Add to start of array
+        array_unshift($_SESSION['viewed_products'], $viewed_product);
+
+        // Keep only last 6 products
+        $_SESSION['viewed_products'] = array_slice($_SESSION['viewed_products'], 0, 6);
+    }
+}
 
 include 'components/add_cart.php';
 $page = 'menu';
@@ -42,20 +82,20 @@ $page = 'menu';
 
     <!-- menu section starts  -->
     <?php
-   // Get unique categories with MAIN DISH first
-   $categories = $conn->prepare("SELECT DISTINCT category FROM products ORDER BY 
+    // Get unique categories with MAIN DISH first
+    $categories = $conn->prepare("SELECT DISTINCT category FROM products ORDER BY 
       CASE 
          WHEN category = 'MAIN DISH' THEN 0 
          ELSE 1 
       END, 
       category");
-   $categories->execute();
+    $categories->execute();
 
-   // For each category
-   while ($category = $categories->fetch(PDO::FETCH_ASSOC)) {
-      $current_category = $category['category'];
-      $banner_image = 'images/pizzahutnew/banner/' . strtolower($current_category) . '.jpeg';
-      ?>
+    // For each category
+    while ($category = $categories->fetch(PDO::FETCH_ASSOC)) {
+        $current_category = $category['category'];
+        $banner_image = 'images/pizzahutnew/banner/' . strtolower($current_category) . '.jpeg';
+        ?>
     <!-- Category Title -->
     <div class="category-title">
         <h2><?= ucwords($current_category) ?></h2>
@@ -70,12 +110,12 @@ $page = 'menu';
     <section class="products">
         <div class="box-container">
             <?php
-            $select_products = $conn->prepare("SELECT * FROM products WHERE category = ?");
-            $select_products->execute([$current_category]);
+                $select_products = $conn->prepare("SELECT * FROM products WHERE category = ?");
+                $select_products->execute([$current_category]);
 
-            if ($select_products->rowCount() > 0) {
-               while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-                  ?>
+                if ($select_products->rowCount() > 0) {
+                    while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
             <form action="" method="post" class="box">
                 <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
                 <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
@@ -106,16 +146,16 @@ $page = 'menu';
                 </div>
             </form>
             <?php
-               }
-            } else {
-               echo '<p class="empty">no products added yet!</p>';
-            }
-            ?>
+                    }
+                } else {
+                    echo '<p class="empty">no products added yet!</p>';
+                }
+                ?>
         </div>
     </section>
     <?php
-   }
-   ?>
+    }
+    ?>
     <!-- menu section ends -->
 
     <!-- footer section starts  -->

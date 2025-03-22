@@ -54,16 +54,14 @@ $page = 'dashboard';
 
             <div class="box">
                 <?php
-                $total_pendings = 0;
-                $select_pendings = $conn->prepare("SELECT * FROM `orders` WHERE payment_status = ?");
-                $select_pendings->execute(['pending']);
-                while ($fetch_pendings = $select_pendings->fetch(PDO::FETCH_ASSOC)) {
-                    $total_pendings += $fetch_pendings['total_price'];
-                }
+                // Đếm số lượng đơn hàng pending
+                $count_pending = $conn->prepare("SELECT COUNT(*) as pending_count FROM `orders` WHERE payment_status = ?");
+                $count_pending->execute(['pending']);
+                $pending_count = $count_pending->fetch(PDO::FETCH_ASSOC)['pending_count'];
                 ?>
-                <h3><span>$</span><?= $total_pendings; ?><span>/-</span></h3>
-                <p>total pendings</p>
-                <a href="placed_orders.php" class="btn">see orders</a>
+                <h3><?= $pending_count; ?></h3>
+                <p>total pending</p>
+                <a href="pending_orders.php" class="btn">see orders</a>
             </div>
 
             <div class="box">
