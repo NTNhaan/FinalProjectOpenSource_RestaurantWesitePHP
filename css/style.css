@@ -1289,7 +1289,7 @@ section {
 @media (max-width: 768px) {
   #menu-btn {
     display: inline-block;
-  }
+  } 
 
   .header .flex .navbar {
     position: absolute;
